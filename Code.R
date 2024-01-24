@@ -1,8 +1,6 @@
 
 pacman::p_load(plyr, lme4, ggplot2, gridExtra, car, tidyverse, emmeans, grid)
 
-setwd("~/Dropbox/Transplants_Coexistence/DRYAD")
-
 ####################
 ####################
 ####################
@@ -30,6 +28,8 @@ DR <- lmer(dRate ~ Lake * Transplant * Treatment * Species + (1|Rep), data = D)
 
 summary(DR)
 Anova(DR, type = 3)
+
+### Figure 1 and 2
 
 yDeath <- expression('Per capita mortality (day'^'-1'~')')
 yGrowth <- expression('Per capita growth (day'^'-1'~')')
@@ -75,9 +75,9 @@ p2 <- ggplot(D3, aes(Treatment, mGrowth, fill = Species, shape = Transplant)) +
         strip.text.x = element_text(size = 14, color = "black")) +
   guides(fill=guide_legend(override.aes=list(shape=21))) 
 
-pdf("Fig1.pdf", width = 10, height = 10)
+# pdf("Fig1.pdf", width = 10, height = 10)
 grid.arrange(p1, p2, ncol = 1)
-dev.off()
+# dev.off()
 
 p3 <- ggplot(D2, aes(Transplant, mDeath, fill = Species)) +
   geom_bar(stat = "identity", position = position_dodge(width = 0.9), col = "black") +
@@ -112,9 +112,9 @@ p4 <- ggplot(D3, aes(Treatment, mDeath, fill = Species, shape = Transplant)) +
         strip.text.x = element_text(size = 14, color = "black")) +
   guides(fill = guide_legend(override.aes = list(shape = 21))) 
 
-pdf("Fig2.pdf", width = 10, height = 10)
+# pdf("Fig2.pdf", width = 10, height = 10)
 grid.arrange(p3, p4, ncol = 1)
-dev.off()
+# dev.off()
 
 ####################
 ####################
@@ -134,7 +134,7 @@ PP <- lmer(dRate ~ Fish_length + Lake * Treatment * Species + (1|Rep), data = pr
 summary(PP)
 Anova(PP, type = 3)
 
-
+### Figure 3
 tst1 <- ddply(pred_all, .(Species, Treatment, Lake), summarise,
               mAlive = mean(na.omit(dRate)), 
               se = sd(na.omit(dRate))/sqrt(length(na.omit(dRate))))
@@ -158,14 +158,15 @@ fPre <- ggplot(tst1, aes(Treatment, mAlive, fill = Species, group = Species)) +
         strip.text.x = element_text(size = 14, color = "black"),
         legend.position = c(0.5, 0.85)) 
 
-pdf("Fig3.pdf", width = 8, height = 6)
+# pdf("Fig3.pdf", width = 8, height = 6)
 fPre
-dev.off()
+# dev.off()
 
 ####################
 ####################
 ####################
 
+### SUPPLEMENTARY
 
 ### ENVIRONMENT
 
@@ -231,9 +232,9 @@ pm <- ggplot(Lk_all[which(Lk_all$env == "Macrophyte"),], aes(Lake, vals)) +
 
 # blank <- grid.rect(gp=gpar(col="white"))
 
-pdf("FigS1.pdf", width = 13, height = 15)
+# pdf("FigS1.pdf", width = 13, height = 15)
 grid.arrange(pf, pp, pl, pm, ncol = 2)
-dev.off()
+# dev.off()
 
 
 #### Correlations
@@ -262,7 +263,7 @@ dat_sum <- data.frame(dat_sum, correlation, p_vals)
 
 dat_sum
 
-pdf("FigS2.pdf", width = 10, height = 8)
+# pdf("FigS2.pdf", width = 10, height = 8)
 ggplot(D, aes(gr_rate, dRate, col = Species)) +
   geom_point(size = 3) + 
   scale_color_manual(label = c(expression(italic("E. exsulans")), 
@@ -274,5 +275,5 @@ ggplot(D, aes(gr_rate, dRate, col = Species)) +
   theme(axis.text.x = element_text(colour = "black"),
         axis.text.y = element_text(colour = "black"),
         text = element_text(size = 15, color = "black"))
-dev.off()
+# dev.off()
 
